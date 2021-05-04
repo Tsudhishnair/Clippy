@@ -1,10 +1,11 @@
 import React from 'react';
-import {Text, SafeAreaView} from 'react-native';
+import {SafeAreaView} from 'react-native';
+import Clippy from './app/index';
 
 export default function App() {
   return (
     <SafeAreaView>
-      <Text>Clippy App</Text>
+      <Clippy />
     </SafeAreaView>
   );
 }
