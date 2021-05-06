@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     fontSize: 16,
     lineHeight: 22,
+    width: '70%',
     color: colors.grey,
   },
 });
