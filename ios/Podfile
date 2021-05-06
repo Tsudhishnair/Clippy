@@ -16,8 +16,6 @@ target 'Clippy' do
     inherit! :complete
     # Pods for testing
   end
-  
-  pod 'RNBootSplash', :path => '../node_modules/react-native-bootsplash'
 
   # Enables Flipper.
   #
