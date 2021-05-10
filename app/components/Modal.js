@@ -1,19 +1,24 @@
 import React from 'react';
-import { Text, View, StyleSheet, Button, Touchable, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
 import colors from '../constants/colors';
 
 export default function BasicModal(props) {
+  const { header, showModal, setModal } = props;
+
   return (
-    <Modal isVisible={true}>
+    <Modal isVisible={showModal}>
       <View style={styles.contentContainer}>
         <View style={styles.header}>
-          <Text style={styles.headerText}>{props.header}</Text>
+          <Text style={styles.headerText}>{header}</Text>
         </View>
         <View style={styles.body}>{props.children}</View>
         <View style={styles.footerBtnGrp}>
           <View style={styles.btnContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setModal(false);
+              }}>
               <View style={styles.cancelBtn}>
                 <Text style={styles.cancelText}>Cancel</Text>
               </View>
