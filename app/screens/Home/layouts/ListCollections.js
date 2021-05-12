@@ -5,33 +5,15 @@ import EmptyState from '../../../components/EmptyState';
 import colors from '../../../constants/colors';
 
 export default function ListCollection(props) {
-  const {} = props;
-  const DATA = [
-    {
-      id: '0',
-      collectionName: 'JavaScript Articles',
-      articles: [],
-    },
-    {
-      id: '1',
-      collectionName: ' React Native',
-      articles: [{ id: '231', name: 'Nullish coalescing in JavaScript - Medium', url: '' }],
-    },
-    {
-      id: '2',
-      collectionName: 'Tailwind css',
-      articles: [{ id: '623', name: 'Nullish coalescing in JavaScript - Medium', url: '' }],
-    },
-  ];
-
+  const { data } = props;
   const renderArticleItem = ({ item }) => {
-    return <Text style={styles.articleItem}>{item.name}</Text>;
+    return <Text style={styles.articleItem}>{item.title}</Text>;
   };
 
   const renderItem = ({ item }) => {
     return (
       <View style={styles.listRenderContainer}>
-        <Text style={styles.collectionName}>{item.collectionName}</Text>
+        <Text style={styles.collectionName}>{item.collection_name}</Text>
         <FlatList
           data={item.articles}
           renderItem={renderArticleItem}
@@ -56,7 +38,7 @@ export default function ListCollection(props) {
 
   return (
     <FlatList
-      data={DATA}
+      data={data.data}
       renderItem={renderItem}
       keyExtractor={item => item.id}
       ListEmptyComponent={emptyStateComp}

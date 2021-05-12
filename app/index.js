@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Home from './screens/Home';
 import Navbar from './components/Navbar';
+import { RootContextProvide } from './store/RootContext';
 
 const Stack = createStackNavigator();
 
@@ -20,13 +21,15 @@ export default function Clippy() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName={screenNames.Home}
-        screenOptions={{
-          header: props => <Navbar {...props} />,
-        }}>
-        <Stack.Screen name={screenNames.Home} component={Home} />
-      </Stack.Navigator>
+      <RootContextProvide>
+        <Stack.Navigator
+          initialRouteName={screenNames.Home}
+          screenOptions={{
+            header: props => <Navbar {...props} />,
+          }}>
+          <Stack.Screen name={screenNames.Home} component={Home} />
+        </Stack.Navigator>
+      </RootContextProvide>
     </NavigationContainer>
   );
 }

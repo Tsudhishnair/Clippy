@@ -4,7 +4,16 @@ import Modal from 'react-native-modal';
 import colors from '../constants/colors';
 
 export default function BasicModal(props) {
-  const { header, showModal, setModal } = props;
+  const { onSubmitFn, header, showModal, setModal } = props;
+
+  const onSubmit = () => {
+    onSubmitFn();
+    closeModal();
+  };
+
+  const closeModal = () => {
+    setModal(false);
+  };
 
   return (
     <Modal isVisible={showModal}>
@@ -17,7 +26,7 @@ export default function BasicModal(props) {
           <View style={styles.btnContainer}>
             <TouchableOpacity
               onPress={() => {
-                setModal(false);
+                closeModal();
               }}>
               <View style={styles.cancelBtn}>
                 <Text style={styles.cancelText}>Cancel</Text>
@@ -25,7 +34,10 @@ export default function BasicModal(props) {
             </TouchableOpacity>
           </View>
           <View style={styles.btnContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                onSubmit();
+              }}>
               <View style={styles.createBtn}>
                 <Text style={styles.createText}>Create</Text>
               </View>

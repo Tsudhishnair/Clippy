@@ -3,14 +3,23 @@ import { View, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 
 function BottomSheet(props) {
-  const { showBottomSheet, setBottomSheet } = props;
+  const { showBottomSheet, setBottomSheet, actions } = props;
+
   const closeSheet = () => {
     setBottomSheet(false);
+  };
+
+  const handleModalClose = () => {
+    const { selectedFn } = actions;
+    if (selectedFn != null) {
+      selectedFn();
+    }
   };
 
   return (
     <Modal
       isVisible={showBottomSheet}
+      onModalHide={handleModalClose}
       onSwipeComplete={closeSheet}
       onBackdropPress={closeSheet}
       swipeDirection={'down'}
