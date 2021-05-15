@@ -1,30 +1,40 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import BasicModal from '../../../components/Modal';
+import { RootContext } from '../../../store/RootContext';
 
 export default function CreateClip({ showModal, setModal }) {
-  const [collectionName, setCollectionName] = useState('');
+  const [clipTitle, setClipTitle] = useState('');
+  const [clipUrl, setClipUrl] = useState('');
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    { label: 'JavaScript', value: 'JavaScript' },
-    { label: 'React', value: 'React' },
-  ]);
+  const [collectionName, setCollectionName] = useState(null);
+  const [items, setItems] = useState([]);
+  const { data, createClip } = useContext(RootContext);
+
+  useEffect(() => {
+    const collectionDropDownItem = data.collection_list.map((collectionName, index) => {
+      return { label: collectionName, value: collectionName };
+    });
+    setItems(collectionDropDownItem);
+  }, [data]);
+
+  const handleSubmit = () => {
+    createClip({ title: clipTitle, url: clipUrl, hasRead: false }, collectionName);
+  };
 
   return (
     <View>
-      <BasicModal header={'Create a clip'} showModal={showModal} setModal={setModal}>
+      <BasicModal onSubmitFn={handleSubmit} header={'Create a clip'} showModal={showModal} setModal={setModal}>
         <View>
           <Text style={styles.label}>Collection</Text>
           <DropDownPicker
             open={open}
-            value={value}
+            value={collectionName}
             items={items}
             setOpen={setOpen}
-            setValue={setValue}
+            setValue={setCollectionName}
             setItems={setItems}
             searchable={false}
             dropDownDirection="TOP"
@@ -33,13 +43,10 @@ export default function CreateClip({ showModal, setModal }) {
               ...styles.dropDownBox,
             }}
           />
+          <Text style={styles.label}>Title</Text>
+          <TextInput style={styles.input} onChangeText={setClipTitle} value={clipTitle} />
           <Text style={styles.label}>URL</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={setCollectionName}
-            value={collectionName}
-            autoFocus
-          />
+          <TextInput style={styles.input} onChangeText={setClipUrl} value={clipUrl} />
         </View>
       </BasicModal>
     </View>

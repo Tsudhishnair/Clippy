@@ -14,7 +14,7 @@ const createCollection = (payload, state) => {
 
 const createClip = (payload, state) => {
   const { clip, collection_name } = payload;
-  let currentState = [...state];
+  let currentState = [...state.data];
   const uuid = generateUniqueId();
   currentState.map(item => {
     if (item.collection_name === collection_name) {
@@ -38,11 +38,12 @@ const editClip = (payload, state) => {
 
 const deleteClip = (payload, state) => {
   const { id } = payload;
-  let currentState = [...state];
+  let currentState = [...state.data];
   currentState.map(item => {
     if (item.articles.length) {
       let updateArticleItems = item.articles.filter(item => item.id !== id);
-      return { ...item, articles: [...updateArticleItems] };
+      item.articles = updateArticleItems;
+      return item;
     } else {
       return item;
     }
@@ -64,4 +65,3 @@ export const MainReducer = (state, action) => {
       return state;
   }
 };
-

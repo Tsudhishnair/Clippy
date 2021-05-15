@@ -1,26 +1,39 @@
 import React from 'react';
-import { FlatList, Text, View, StyleSheet } from 'react-native';
+import { FlatList, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import EmptyState from '../../../components/EmptyState';
 import colors from '../../../constants/colors';
 
 export default function ListCollection(props) {
+  const navigation = useNavigation();
+
   const { data } = props;
+
   const renderArticleItem = ({ item }) => {
     return <Text style={styles.articleItem}>{item.title}</Text>;
   };
 
+  const handleCollectionItemPress = id => {
+    navigation.navigate('Articles', { selectedCollectionId: id });
+  };
+
   const renderItem = ({ item }) => {
     return (
-      <View style={styles.listRenderContainer}>
-        <Text style={styles.collectionName}>{item.collection_name}</Text>
-        <FlatList
-          data={item.articles}
-          renderItem={renderArticleItem}
-          keyExtractor={item => item.id}
-          ListEmptyComponent={<Text style={styles.articleItem}>No clips!</Text>}
-        />
-      </View>
+      <TouchableOpacity
+        onPress={() => {
+          handleCollectionItemPress(item.id);
+        }}>
+        <View style={styles.listRenderContainer}>
+          <Text style={styles.collectionName}>{item.collection_name}</Text>
+          <FlatList
+            data={item.articles}
+            renderItem={renderArticleItem}
+            keyExtractor={item => item.id}
+            ListEmptyComponent={<Text style={styles.articleItem}>No clips!</Text>}
+          />
+        </View>
+      </TouchableOpacity>
     );
   };
 
