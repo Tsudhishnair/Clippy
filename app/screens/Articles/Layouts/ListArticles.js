@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, SectionList, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, SectionList, StyleSheet, TouchableOpacity, Linking, Alert } from 'react-native';
 
 import EmptyState from '../../../components/EmptyState';
 import colors from '../../../constants/colors';
@@ -11,14 +11,23 @@ export default function ListArticles({ articleItems, handleBottomSheet }) {
     return <Text style={styles.header}>{title}</Text>;
   };
 
+  const openUrl = async url => {
+    const canOpenTheSpecifiedUrl = await Linking.canOpenURL(url);
+    if (canOpenTheSpecifiedUrl) {
+      await Linking.openURL(url);
+    } else {
+      Alert.alert('Something unexpected occurred.', `Cannot open this url: ${url}`);
+    }
+  };
+
   const articleListLayout = ({ item }) => {
     return (
       <TouchableOpacity
         onLongPress={() => {
-          handleBottomSheet(item.id);
+          handleBottomSheet(item);
         }}
         onPress={() => {
-          alert('Normal press');
+          openUrl(item.url);
         }}>
         <View>
           <Text style={styles.articleItem}>{item.title}</Text>

@@ -13,7 +13,7 @@ export default function Articles({ route, navigation }) {
 
   const [formattedArticle, setFormattedArticle] = useState([]);
   const [showBottomSheet, setBottomSheet] = useState(false);
-  const [selectedId, setSelectedArticleId] = useState(null);
+  const [selectedArticleItem, setSelectedArticle] = useState(null);
 
   useEffect(() => {
     const articleListItems = data.data.filter(item => item.id == selectedCollectionId)[0].articles;
@@ -28,8 +28,8 @@ export default function Articles({ route, navigation }) {
     setFormattedArticle(formattedArticleObj);
   }, [selectedCollectionId, data]);
 
-  const handleBottomSheet = id => {
-    setSelectedArticleId(id);
+  const handleBottomSheet = item => {
+    setSelectedArticle(item);
     setBottomSheet(!showBottomSheet);
   };
 
@@ -38,7 +38,7 @@ export default function Articles({ route, navigation }) {
   return (
     <View style={styles.container}>
       <ListArticles articleItems={formattedArticle} handleBottomSheet={handleBottomSheet} />
-      <ArticleBottomSheet setBottomSheet={setBottomSheet} showBottomSheet={showBottomSheet} id={selectedId} actionFunctions={actionFunctions} />
+      <ArticleBottomSheet setBottomSheet={setBottomSheet} showBottomSheet={showBottomSheet} selectedArticle={selectedArticleItem} actionFunctions={actionFunctions} />
       <Button
         title={'GO BACK'}
         onPress={() => {
