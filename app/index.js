@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Home from './screens/Home';
+import Articles from './screens/Articles';
 import Navbar from './components/Navbar';
 import { RootContextProvide } from './store/RootContext';
 
@@ -17,6 +18,7 @@ export default function Clippy() {
 
   const screenNames = {
     Home: 'Home',
+    Articles: 'Articles',
   };
 
   return (
@@ -28,6 +30,7 @@ export default function Clippy() {
             header: props => <Navbar {...props} />,
           }}>
           <Stack.Screen name={screenNames.Home} component={Home} />
+          <Stack.Screen name={screenNames.Articles} component={Articles} />
         </Stack.Navigator>
       </RootContextProvide>
     </NavigationContainer>
