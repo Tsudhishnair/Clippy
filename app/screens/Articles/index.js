@@ -1,12 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Button, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { RootContext } from '../../store/RootContext';
 import ListArticles from './Layouts/ListArticles';
 import { groupBy } from '../../utils/mainUtils';
 import ArticleBottomSheet from './Layouts/ArticleBottomSheet';
 
-export default function Articles({ route, navigation }) {
+export default function Articles({ route }) {
   const { selectedCollectionId } = route.params;
 
   const { data } = useContext(RootContext);
@@ -38,12 +38,11 @@ export default function Articles({ route, navigation }) {
   return (
     <View style={styles.container}>
       <ListArticles articleItems={formattedArticle} handleBottomSheet={handleBottomSheet} />
-      <ArticleBottomSheet setBottomSheet={setBottomSheet} showBottomSheet={showBottomSheet} selectedArticle={selectedArticleItem} actionFunctions={actionFunctions} />
-      <Button
-        title={'GO BACK'}
-        onPress={() => {
-          navigation.navigate('Home');
-        }}
+      <ArticleBottomSheet
+        setBottomSheet={setBottomSheet}
+        showBottomSheet={showBottomSheet}
+        selectedArticle={selectedArticleItem}
+        actionFunctions={actionFunctions}
       />
     </View>
   );

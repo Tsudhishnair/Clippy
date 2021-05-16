@@ -8,7 +8,7 @@ export default function FabButton(props) {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={props.actionFn}>
-        <Icon name="ri-add-circle-fill" size="65" color={colors.golden}></Icon>
+        <Icon name="ri-add-circle-fill" size="60" color={colors.golden}></Icon>
       </TouchableOpacity>
     </View>
   );
