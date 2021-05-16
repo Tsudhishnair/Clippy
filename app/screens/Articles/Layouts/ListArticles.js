@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, SectionList, StyleSheet, TouchableOpacity, Linking, Alert } from 'react-native';
+import { View, Text, SectionList, StyleSheet, TouchableOpacity, Linking, Alert, Image } from 'react-native';
 
 import EmptyState from '../../../components/EmptyState';
 import colors from '../../../constants/colors';
+import { favIconBaseUrl } from '../../../constants/Urls';
 
 export default function ListArticles({ articleItems, handleBottomSheet }) {
   const articleList = [...articleItems];
@@ -29,7 +30,13 @@ export default function ListArticles({ articleItems, handleBottomSheet }) {
         onPress={() => {
           openUrl(item.url);
         }}>
-        <View>
+        <View style={styles.articleItemWrapper}>
+          <Image
+            source={{
+              uri: `${favIconBaseUrl}${item.url}`,
+            }}
+            style={styles.domainIcon}
+          />
           <Text style={styles.articleItem}>{item.title}</Text>
         </View>
       </TouchableOpacity>
@@ -75,12 +82,17 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     textAlign: 'center',
   },
+  articleItemWrapper: {
+    flexDirection: 'row',
+    margin: 10,
+    alignItems: 'center',
+  },
   articleItem: {
     fontSize: 16,
     color: '#261C1C',
     fontStyle: 'italic',
     textAlign: 'left',
-    margin: 15,
+    marginHorizontal: 10,
   },
   itemSeparator: {
     borderColor: colors.grey,
@@ -91,5 +103,9 @@ const styles = StyleSheet.create({
   },
   emptyStateContainer: {
     flex: 1,
+  },
+  domainIcon: {
+    height: 25,
+    width: 25,
   },
 });
