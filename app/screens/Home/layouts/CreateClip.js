@@ -6,7 +6,6 @@ import BasicModal from '../../../components/Modal';
 import { RootContext } from '../../../store/RootContext';
 
 export default function CreateClip({ showModal, setModal }) {
-  const [clipTitle, setClipTitle] = useState('');
   const [clipUrl, setClipUrl] = useState('');
   const [open, setOpen] = useState(false);
   const [collectionName, setCollectionName] = useState(null);
@@ -20,8 +19,15 @@ export default function CreateClip({ showModal, setModal }) {
     setItems(collectionDropDownItem);
   }, [data]);
 
-  const handleSubmit = () => {
-    createClip({ title: clipTitle, url: clipUrl, hasRead: false }, collectionName);
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch(clipUrl);
+      const responseText = await response.text();
+      const title = responseText.match(/<title[^>]*>([^<]+)<\/title>/)[1] || '-';
+      createClip({ title: title, url: clipUrl, hasRead: false }, collectionName);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -43,8 +49,6 @@ export default function CreateClip({ showModal, setModal }) {
               ...styles.dropDownBox,
             }}
           />
-          <Text style={styles.label}>Title</Text>
-          <TextInput style={styles.input} onChangeText={setClipTitle} value={clipTitle} />
           <Text style={styles.label}>URL</Text>
           <TextInput style={styles.input} onChangeText={setClipUrl} value={clipUrl} />
         </View>
