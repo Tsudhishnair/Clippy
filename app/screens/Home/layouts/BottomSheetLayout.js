@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet, Button } from 'react-native';
 import BottomSheet from '../../../components/BottomSheet';
+
 import colors from '../../../constants/colors';
 
 export default function BottomSheetLayout(props) {

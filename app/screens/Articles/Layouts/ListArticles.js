@@ -4,12 +4,15 @@ import { View, Text, SectionList, StyleSheet, TouchableOpacity, Linking, Alert, 
 import EmptyState from '../../../components/EmptyState';
 import colors from '../../../constants/colors';
 import { favIconBaseUrl } from '../../../constants/Urls';
+import { GlobalStyle } from '../../../constants/GlobalStyle';
 
 export default function ListArticles({ articleItems, handleBottomSheet }) {
   const articleList = [...articleItems];
 
   const sectionHeader = ({ title }) => {
-    return <Text style={styles.header}>{title}</Text>;
+    if (title !== 'UnRead') {
+      return <Text style={[GlobalStyle.text, styles.header]}>{title}</Text>;
+    }
   };
 
   const openUrl = async url => {
@@ -37,7 +40,7 @@ export default function ListArticles({ articleItems, handleBottomSheet }) {
             }}
             style={styles.domainIcon}
           />
-          <Text style={styles.articleItem}>{item.title}</Text>
+          <Text style={[GlobalStyle.text, styles.articleItem]}>{item.title}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -77,7 +80,6 @@ const styles = StyleSheet.create({
   },
   header: {
     color: colors.grey,
-    fontStyle: 'italic',
     fontSize: 16,
     marginVertical: 5,
     textAlign: 'center',
@@ -90,7 +92,6 @@ const styles = StyleSheet.create({
   articleItem: {
     fontSize: 16,
     color: '#261C1C',
-    fontStyle: 'italic',
     textAlign: 'left',
     marginHorizontal: 10,
   },

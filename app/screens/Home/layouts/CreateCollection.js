@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
 
 import BasicModal from '../../../components/Modal';
+import { GlobalStyle } from '../../../constants/GlobalStyle';
 
 export default function CreateCollection(props) {
   const { createCollection, showModal, setModal } = props;
@@ -16,8 +17,8 @@ export default function CreateCollection(props) {
     <View>
       <BasicModal onSubmitFn={handleSubmit} header={'Create a collection'} showModal={showModal} setModal={setModal}>
         <View>
-          <Text style={styles.label}>Collection name</Text>
-          <TextInput style={styles.input} onChangeText={setCollectionName} value={collectionName} autoFocus />
+          <Text style={GlobalStyle.text}>Collection name</Text>
+          <TextInput style={[GlobalStyle.text, styles.input]} onChangeText={setCollectionName} value={collectionName} autoFocus />
         </View>
       </BasicModal>
     </View>
@@ -25,7 +26,6 @@ export default function CreateCollection(props) {
 }
 
 const styles = StyleSheet.create({
-  label: {},
   input: {
     backgroundColor: '#EEEEEE',
     borderRadius: 2,

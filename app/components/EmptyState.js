@@ -1,11 +1,13 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
+
 import colors from '../constants/colors';
+import { GlobalStyle } from '../constants/GlobalStyle';
 
 export default function EmptyState({ message }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>{message}</Text>
+      <Text style={[GlobalStyle.text, styles.text]}>{message}</Text>
     </View>
   );
 }
@@ -18,10 +20,7 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
-    fontStyle: 'italic',
-    fontSize: 16,
-    lineHeight: 22,
-    width: '70%',
+    width: '60%',
     color: colors.grey,
   },
 });

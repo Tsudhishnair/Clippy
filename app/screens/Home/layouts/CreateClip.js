@@ -4,6 +4,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 import BasicModal from '../../../components/Modal';
 import { RootContext } from '../../../store/RootContext';
+import { GlobalStyle } from '../../../constants/GlobalStyle';
 
 export default function CreateClip({ showModal, setModal }) {
   const [clipUrl, setClipUrl] = useState('');
@@ -34,7 +35,7 @@ export default function CreateClip({ showModal, setModal }) {
     <View>
       <BasicModal onSubmitFn={handleSubmit} header={'Create a clip'} showModal={showModal} setModal={setModal}>
         <View>
-          <Text style={styles.label}>Collection</Text>
+          <Text style={[GlobalStyle.text, styles.label]}>Collection</Text>
           <DropDownPicker
             open={open}
             value={collectionName}
@@ -49,8 +50,8 @@ export default function CreateClip({ showModal, setModal }) {
               ...styles.dropDownBox,
             }}
           />
-          <Text style={styles.label}>URL</Text>
-          <TextInput style={styles.input} onChangeText={setClipUrl} value={clipUrl} />
+          <Text style={[GlobalStyle.text, styles.label]}>URL</Text>
+          <TextInput style={[GlobalStyle.text, styles.input]} onChangeText={setClipUrl} value={clipUrl} />
         </View>
       </BasicModal>
     </View>
@@ -61,8 +62,6 @@ const styles = StyleSheet.create({
   label: {
     color: '#261C1C',
     marginVertical: 5,
-    fontSize: 14,
-    fontStyle: 'italic',
     marginTop: 15,
   },
   input: {

@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import EmptyState from '../../../components/EmptyState';
 import colors from '../../../constants/colors';
+import { GlobalStyle } from '../../../constants/GlobalStyle';
 
 export default function ListCollection(props) {
   const navigation = useNavigation();
@@ -11,7 +12,7 @@ export default function ListCollection(props) {
   const { data } = props;
 
   const renderArticleItem = ({ item }) => {
-    return <Text style={styles.articleItem}>{item.title}</Text>;
+    return <Text style={[GlobalStyle.text, styles.articleItem]}>{item.title}</Text>;
   };
 
   const handleCollectionItemPress = id => {
@@ -25,12 +26,12 @@ export default function ListCollection(props) {
           handleCollectionItemPress(item.id);
         }}>
         <View style={styles.listRenderContainer}>
-          <Text style={styles.collectionName}>{item.collection_name}</Text>
+          <Text style={[GlobalStyle.text, styles.collectionName]}>{item.collection_name}</Text>
           <FlatList
             data={item.articles}
             renderItem={renderArticleItem}
             keyExtractor={item => item.id}
-            ListEmptyComponent={<Text style={styles.articleItem}>No clips!</Text>}
+            ListEmptyComponent={<Text style={[GlobalStyle.text, styles.articleItem]}>No clips!</Text>}
           />
         </View>
       </TouchableOpacity>
@@ -43,7 +44,7 @@ export default function ListCollection(props) {
 
   const emptyStateComp = () => {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={styles.emptyStateContainer}>
         <EmptyState message={'No clips! Start by creating a collection using the + button'} />
       </View>
     );
@@ -76,11 +77,13 @@ const styles = StyleSheet.create({
   collectionName: {
     color: '#261C1C',
     fontSize: 16,
-    fontStyle: 'italic',
-    lineHeight: 21,
   },
   articleItem: {
     color: colors.grey,
-    marginTop: 10,
+    marginTop: 5,
+    fontSize: 12,
+  },
+  emptyStateContainer: {
+    flex: 1,
   },
 });

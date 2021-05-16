@@ -1,7 +1,9 @@
 import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
+
 import colors from '../constants/colors';
+import { GlobalStyle } from '../constants/GlobalStyle';
 
 export default function BasicModal(props) {
   const { onSubmitFn, header, showModal, setModal } = props;
@@ -19,7 +21,7 @@ export default function BasicModal(props) {
     <Modal isVisible={showModal}>
       <View style={styles.contentContainer}>
         <View style={styles.header}>
-          <Text style={styles.headerText}>{header}</Text>
+          <Text style={[GlobalStyle.text, styles.headerText]}>{header}</Text>
         </View>
         <View style={styles.body}>{props.children}</View>
         <View style={styles.footerBtnGrp}>
@@ -29,7 +31,7 @@ export default function BasicModal(props) {
                 closeModal();
               }}>
               <View style={styles.cancelBtn}>
-                <Text style={styles.cancelText}>Cancel</Text>
+                <Text style={[GlobalStyle.text, styles.cancelText]}>Cancel</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -39,7 +41,7 @@ export default function BasicModal(props) {
                 onSubmit();
               }}>
               <View style={styles.createBtn}>
-                <Text style={styles.createText}>Create</Text>
+                <Text style={[GlobalStyle.text, styles.createText]}>Create</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -64,7 +66,6 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#fff',
-    fontStyle: 'italic',
     fontSize: 18,
     fontWeight: '700',
   },
