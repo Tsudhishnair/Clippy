@@ -27,8 +27,12 @@ export default function BottomSheetLayout() {
     });
   };
 
+  const resetFns = () => {
+    setActionAfterSheetClose({ selectedFn: null });
+  };
+
   return (
-    <BottomSheet showBottomSheet={showBottomSheet} setBottomSheet={setBottomSheet} actions={actionAfterSheetClose}>
+    <BottomSheet showBottomSheet={showBottomSheet} setBottomSheet={setBottomSheet} actions={actionAfterSheetClose} resetFns={resetFns}>
       <View style={styles.container}>
         <Button
           title={'Create a clip'}

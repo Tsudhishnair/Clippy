@@ -30,6 +30,10 @@ export default function ArticleBottomSheet({ selectedArticle }) {
     setBottomSheet(!showBottomSheet);
   };
 
+  const resetFns = () => {
+    setActionAfterSheetClose({ selectedFn: null });
+  };
+
   const openUrl = async url => {
     try {
       const canOpenTheSpecifiedUrl = await Linking.canOpenURL(url);
@@ -80,7 +84,7 @@ export default function ArticleBottomSheet({ selectedArticle }) {
   };
 
   return (
-    <BottomSheet showBottomSheet={showBottomSheet} setBottomSheet={setBottomSheet} actions={actionAfterSheetClose}>
+    <BottomSheet showBottomSheet={showBottomSheet} setBottomSheet={setBottomSheet} actions={actionAfterSheetClose} resetFns={resetFns}>
       {bottomSheetContent()}
     </BottomSheet>
   );

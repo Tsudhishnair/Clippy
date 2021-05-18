@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 
 function BottomSheet(props) {
-  const { showBottomSheet, setBottomSheet, actions } = props;
+  const { showBottomSheet, setBottomSheet, actions, resetFns } = props;
 
   const closeSheet = () => {
     setBottomSheet(false);
@@ -14,6 +14,7 @@ function BottomSheet(props) {
     if (selectedFn != null) {
       selectedFn();
     }
+    resetFns();
   };
 
   return (
