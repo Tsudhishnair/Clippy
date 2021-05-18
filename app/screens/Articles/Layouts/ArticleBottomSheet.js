@@ -6,9 +6,9 @@ import colors from '../../../constants/colors';
 import { ModalContext } from '../../../store/ModalContext';
 import { RootContext } from '../../../store/RootContext';
 
-export default function ArticleBottomSheet({ selectedArticle, actionFunctions }) {
+export default function ArticleBottomSheet({ selectedArticle }) {
   const { deleteClip, markAsRead } = useContext(RootContext);
-  const { showBottomSheet, setBottomSheet } = useContext(ModalContext);
+  const { showBottomSheet, setBottomSheet, showCreateOrEditClipModal, setCreateOrEditClipModal } = useContext(ModalContext);
   const [actionAfterSheetClose, setActionAfterSheetClose] = useState({ selectedFn: null });
 
   const handleDeleteArticle = id => {
@@ -16,7 +16,14 @@ export default function ArticleBottomSheet({ selectedArticle, actionFunctions })
     setBottomSheet(!showBottomSheet);
   };
 
-  const handleEdit = () => {};
+  const handleEdit = () => {
+    setActionAfterSheetClose({
+      selectedFn: () => {
+        setCreateOrEditClipModal(!showCreateOrEditClipModal);
+      },
+    });
+    setBottomSheet(!showBottomSheet);
+  };
 
   const handleMarkAsRead = id => {
     markAsRead(id);

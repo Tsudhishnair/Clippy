@@ -29,32 +29,40 @@ const createClip = (payload, state) => {
 const editClip = (payload, state) => {
   const { clip, collection_name, id } = payload;
   let currentState = [...state.data];
-  currentState.map(item => {
+  let collectionNameChanged = false;
+  let updatedDataState = currentState.map(item => {
     if (item.articles.length) {
-      return item.articles
+      let updateArticleItemList = item.articles
         .map(articleItem => {
           if (articleItem.id === id) {
             if (item.collection_name === collection_name) {
-              articleItem = { ...clip };
+              articleItem['url'] = clip.url;
+              articleItem['title'] = clip.title;
               return articleItem;
             } else {
+              collectionNameChanged = true;
               return null;
             }
           } else {
             return articleItem;
           }
         })
-        .filter(item => item != null);
+        .filter(item => item !== null);
+      return { id: item.id, collection_name: item.collection_name, articles: updateArticleItemList };
     } else {
-      if (item.collection_name == collection_name) {
+      return item;
+    }
+  });
+  if (collectionNameChanged) {
+    updatedDataState.map(item => {
+      if (item.collection_name === collection_name) {
         const newClipDataObj = { id: id, ...clip };
         item.articles.push(newClipDataObj);
       }
       return item;
-    }
-  });
-  console.log(currentState, 'Current State after editing');
-  // return { ...state, data: currentState };
+    });
+  }
+  return { ...state, data: updatedDataState };
 };
 
 const deleteClip = (payload, state) => {

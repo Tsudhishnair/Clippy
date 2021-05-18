@@ -15,15 +15,15 @@ export default function ListCollection(props) {
     return <Text style={[GlobalStyle.text, styles.articleItem]}>{item.title}</Text>;
   };
 
-  const handleCollectionItemPress = id => {
-    navigation.navigate('Articles', { selectedCollectionId: id });
+  const handleCollectionItemPress = (id, name) => {
+    navigation.navigate('Articles', { selectedCollectionId: id, selectedCollectionName: name });
   };
 
   const renderItem = ({ item }) => {
     return (
       <TouchableOpacity
         onPress={() => {
-          handleCollectionItemPress(item.id);
+          handleCollectionItemPress(item.id, item.collection_name);
         }}>
         <View style={styles.listRenderContainer}>
           <Text style={[GlobalStyle.text, styles.collectionName]}>{item.collection_name}</Text>

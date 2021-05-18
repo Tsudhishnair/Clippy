@@ -2,10 +2,10 @@ import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import BasicModal from '../../../components/Modal';
-import { RootContext } from '../../../store/RootContext';
-import { GlobalStyle } from '../../../constants/GlobalStyle';
-import { ModalContext } from '../../../store/ModalContext';
+import BasicModal from '../../components/Modal';
+import { RootContext } from '../../store/RootContext';
+import { GlobalStyle } from '../../constants/GlobalStyle';
+import { ModalContext } from '../../store/ModalContext';
 
 export default function CreateOrEditClip({ initialValues }) {
   const [clipUrl, setClipUrl] = useState('');
@@ -17,18 +17,18 @@ export default function CreateOrEditClip({ initialValues }) {
   const { showCreateOrEditClipModal, setCreateOrEditClipModal } = useContext(ModalContext);
 
   useEffect(() => {
-    if (initialValues.isEditClip) {
-      setClipUrl(initialValues.clipUrl);
-      setCollectionName(initialValues.collectionName);
-    }
-  }, []);
-
-  useEffect(() => {
     const collectionDropDownItem = data.collection_list.map((collectionName, index) => {
       return { label: collectionName, value: collectionName };
     });
     setItems(collectionDropDownItem);
   }, [data]);
+
+  useEffect(() => {
+    if (initialValues.isEditClip) {
+      setClipUrl(initialValues.clipUrl);
+      setCollectionName(initialValues.collectionName);
+    }
+  }, [initialValues]);
 
   const handleSubmit = async () => {
     try {

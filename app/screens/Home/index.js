@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import FabButton from '../../components/Fab';
-import CreateOrEditClip from './layouts/CreateOrEditClip';
-import CreateOrEditCollection from './layouts/CreateOrEditCollection';
+import CreateOrEditClip from '../layouts/CreateOrEditClip';
+import CreateOrEditCollection from '../layouts/CreateOrEditCollection';
 import ListCollection from './layouts/ListCollections';
 import BottomSheetLayout from './layouts/BottomSheetLayout';
 import { RootContext } from '../../store/RootContext';
