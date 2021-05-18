@@ -5,13 +5,23 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import BasicModal from '../../../components/Modal';
 import { RootContext } from '../../../store/RootContext';
 import { GlobalStyle } from '../../../constants/GlobalStyle';
+import { ModalContext } from '../../../store/ModalContext';
 
-export default function CreateClip({ showModal, setModal }) {
+export default function CreateOrEditClip({ initialValues }) {
   const [clipUrl, setClipUrl] = useState('');
   const [open, setOpen] = useState(false);
   const [collectionName, setCollectionName] = useState(null);
   const [items, setItems] = useState([]);
-  const { data, createClip } = useContext(RootContext);
+
+  const { data, createClip, editClip } = useContext(RootContext);
+  const { showCreateOrEditClipModal, setCreateOrEditClipModal } = useContext(ModalContext);
+
+  useEffect(() => {
+    if (initialValues.isEditClip) {
+      setClipUrl(initialValues.clipUrl);
+      setCollectionName(initialValues.collectionName);
+    }
+  }, []);
 
   useEffect(() => {
     const collectionDropDownItem = data.collection_list.map((collectionName, index) => {
@@ -24,8 +34,13 @@ export default function CreateClip({ showModal, setModal }) {
     try {
       const response = await fetch(clipUrl);
       const responseText = await response.text();
-      const title = responseText.match(/<title[^>]*>([^<]+)<\/title>/)[1] || '-';
-      createClip({ title: title, url: clipUrl, hasRead: false }, collectionName);
+      const title = responseText.match(/<title[^>]*>([^<]+)<\/title>/)[1];
+      const dataObj = { title: title != null ? title : '-', url: clipUrl, hasRead: false };
+      if (!initialValues.isEditClip) {
+        createClip({ ...dataObj }, collectionName);
+      } else {
+        editClip({ ...dataObj }, collectionName, initialValues.id);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -33,7 +48,7 @@ export default function CreateClip({ showModal, setModal }) {
 
   return (
     <View>
-      <BasicModal onSubmitFn={handleSubmit} header={'Create a clip'} showModal={showModal} setModal={setModal}>
+      <BasicModal onSubmitFn={handleSubmit} header={'Create a clip'} showModal={showCreateOrEditClipModal} setModal={setCreateOrEditClipModal}>
         <View>
           <Text style={[GlobalStyle.text, styles.label]}>Collection</Text>
           <DropDownPicker

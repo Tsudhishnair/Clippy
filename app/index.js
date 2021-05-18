@@ -8,6 +8,7 @@ import Home from './screens/Home';
 import Articles from './screens/Articles';
 import Navbar from './components/Navbar';
 import { RootContextProvide } from './store/RootContext';
+import { ModalContextProvider } from './store/ModalContext';
 
 const Stack = createStackNavigator();
 
@@ -24,14 +25,16 @@ export default function Clippy() {
   return (
     <NavigationContainer>
       <RootContextProvide>
-        <Stack.Navigator
-          initialRouteName={screenNames.Home}
-          screenOptions={{
-            header: props => <Navbar {...props} />,
-          }}>
-          <Stack.Screen name={screenNames.Home} component={Home} />
-          <Stack.Screen name={screenNames.Articles} component={Articles} />
-        </Stack.Navigator>
+        <ModalContextProvider>
+          <Stack.Navigator
+            initialRouteName={screenNames.Home}
+            screenOptions={{
+              header: props => <Navbar {...props} />,
+            }}>
+            <Stack.Screen name={screenNames.Home} component={Home} />
+            <Stack.Screen name={screenNames.Articles} component={Articles} />
+          </Stack.Navigator>
+        </ModalContextProvider>
       </RootContextProvide>
     </NavigationContainer>
   );

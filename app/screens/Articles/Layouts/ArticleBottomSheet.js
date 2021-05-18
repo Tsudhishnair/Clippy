@@ -3,16 +3,20 @@ import { View, Button, StyleSheet, Alert, Linking } from 'react-native';
 
 import BottomSheet from '../../../components/BottomSheet';
 import colors from '../../../constants/colors';
+import { ModalContext } from '../../../store/ModalContext';
 import { RootContext } from '../../../store/RootContext';
 
-export default function ArticleBottomSheet({ selectedArticle, setBottomSheet, showBottomSheet, actionFunctions }) {
+export default function ArticleBottomSheet({ selectedArticle, actionFunctions }) {
   const { deleteClip } = useContext(RootContext);
+  const { showBottomSheet, setBottomSheet } = useContext(ModalContext);
   const [actionAfterSheetClose, setActionAfterSheetClose] = useState({ selectedFn: null });
 
   const handleDeleteArticle = id => {
     deleteClip(id);
     setBottomSheet(!showBottomSheet);
   };
+
+  const handleEdit = () => {};
 
   const openUrl = async url => {
     try {
@@ -39,6 +43,13 @@ export default function ArticleBottomSheet({ selectedArticle, setBottomSheet, sh
           color={colors.grey}
         />
         <Button title={'Mark as read'} onPress={() => {}} color={colors.grey} />
+        <Button
+          title={'Edit'}
+          onPress={() => {
+            handleEdit();
+          }}
+          color={colors.grey}
+        />
         <Button
           title={'Delete'}
           onPress={() => {

@@ -15,8 +15,8 @@ export const RootContextProvide = ({ children }) => {
     dispatch({ type: CREATE_CLIP, payload: { clip: clip, collection_name: collection_name } });
   };
 
-  const editClip = (clip, id) => {
-    dispatch({ type: EDIT_CLIP, payload: { clip: clip, id: id } });
+  const editClip = (clip, collection_name, id) => {
+    dispatch({ type: EDIT_CLIP, payload: { clip: clip, collection_name: collection_name, id: id } });
   };
 
   const deleteClip = id => {

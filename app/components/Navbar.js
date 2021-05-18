@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
 import colors from '../constants/colors';
+import { GlobalStyle } from '../constants/GlobalStyle';
 
 export default function Navbar(props) {
   const { previous, navigation } = props;
@@ -22,7 +23,7 @@ export default function Navbar(props) {
   return (
     <View style={styles.container}>
       <View>{!!previous && backButton()}</View>
-      <Text style={styles.textLogo}>Clippy</Text>
+      <Text style={[GlobalStyle.text, styles.textLogo]}>Clippy</Text>
       <View style={styles.rightContainer}>
         {!!previous && (
           <>
@@ -46,7 +47,6 @@ const styles = StyleSheet.create({
   },
   textLogo: {
     color: '#fff',
-    fontStyle: 'italic',
     fontSize: 20,
     fontWeight: '700',
   },

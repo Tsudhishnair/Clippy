@@ -27,13 +27,34 @@ const createClip = (payload, state) => {
 };
 
 const editClip = (payload, state) => {
-  // @Todo : Check this last as this requires few array handling
-  // const { clip, id } = payload;
-  // let currentState = [...state];
-  // currentState.map(item => {
-  //   if (item.articles.length) {
-  //   }
-  // });
+  const { clip, collection_name, id } = payload;
+  let currentState = [...state.data];
+  currentState.map(item => {
+    if (item.articles.length) {
+      return item.articles
+        .map(articleItem => {
+          if (articleItem.id === id) {
+            if (item.collection_name === collection_name) {
+              articleItem = { ...clip };
+              return articleItem;
+            } else {
+              return null;
+            }
+          } else {
+            return articleItem;
+          }
+        })
+        .filter(item => item != null);
+    } else {
+      if (item.collection_name == collection_name) {
+        const newClipDataObj = { id: id, ...clip };
+        item.articles.push(newClipDataObj);
+      }
+      return item;
+    }
+  });
+  console.log(currentState, 'Current State after editing');
+  // return { ...state, data: currentState };
 };
 
 const deleteClip = (payload, state) => {

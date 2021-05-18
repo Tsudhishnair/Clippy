@@ -5,14 +5,15 @@ import { RootContext } from '../../store/RootContext';
 import ListArticles from './Layouts/ListArticles';
 import { groupBy } from '../../utils/mainUtils';
 import ArticleBottomSheet from './Layouts/ArticleBottomSheet';
+import { ModalContext } from '../../store/ModalContext';
 
 export default function Articles({ route }) {
   const { selectedCollectionId } = route.params;
 
   const { data } = useContext(RootContext);
+  const { showBottomSheet, setBottomSheet } = useContext(ModalContext);
 
   const [formattedArticle, setFormattedArticle] = useState([]);
-  const [showBottomSheet, setBottomSheet] = useState(false);
   const [selectedArticleItem, setSelectedArticle] = useState(null);
 
   useEffect(() => {
@@ -38,12 +39,7 @@ export default function Articles({ route }) {
   return (
     <View style={styles.container}>
       <ListArticles articleItems={formattedArticle} handleBottomSheet={handleBottomSheet} />
-      <ArticleBottomSheet
-        setBottomSheet={setBottomSheet}
-        showBottomSheet={showBottomSheet}
-        selectedArticle={selectedArticleItem}
-        actionFunctions={actionFunctions}
-      />
+      <ArticleBottomSheet selectedArticle={selectedArticleItem} actionFunctions={actionFunctions} />
     </View>
   );
 }

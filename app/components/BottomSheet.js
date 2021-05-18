@@ -37,6 +37,6 @@ const styles = StyleSheet.create({
   },
   body: {
     backgroundColor: '#fff',
-    height: '15%',
+    height: '20%',
   },
 });

@@ -1,21 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, StyleSheet, Button } from 'react-native';
 import BottomSheet from '../../../components/BottomSheet';
 
 import colors from '../../../constants/colors';
+import { ModalContext } from '../../../store/ModalContext';
 
-export default function BottomSheetLayout(props) {
-  const { showBottomSheet, setBottomSheet, actionFunctions } = props;
-
-  const { setCollectionModal, setClipModal } = actionFunctions;
-
+export default function BottomSheetLayout() {
+  const { showBottomSheet, setBottomSheet, setCreateOrEditClipModal, setCreateOrEditCollectionModal } = useContext(ModalContext);
   const [actionAfterSheetClose, setActionAfterSheetClose] = useState({ selectedFn: null });
 
   const handleCreateClipOnPress = () => {
     setBottomSheet(false);
     setActionAfterSheetClose({
       selectedFn: () => {
-        setClipModal(true);
+        setCreateOrEditClipModal(true);
       },
     });
   };
@@ -24,7 +22,7 @@ export default function BottomSheetLayout(props) {
     setBottomSheet(false);
     setActionAfterSheetClose({
       selectedFn: () => {
-        setCollectionModal(true);
+        setCreateOrEditCollectionModal(true);
       },
     });
   };
