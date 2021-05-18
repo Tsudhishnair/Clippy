@@ -1,4 +1,4 @@
-import { CREATE_COLLECTION, CREATE_CLIP, EDIT_CLIP, DELETE_CLIP } from './ActionCreator';
+import { CREATE_COLLECTION, CREATE_CLIP, EDIT_CLIP, DELETE_CLIP, MARK_AS_READ } from './ActionCreator';
 import { generateUniqueId } from '../utils/mainUtils';
 
 const createCollection = (payload, state) => {
@@ -72,6 +72,24 @@ const deleteClip = (payload, state) => {
   return { ...state, data: currentState };
 };
 
+const markAsRead = (payload, state) => {
+  const { id } = payload;
+  let currentState = [...state.data];
+  currentState.map(item => {
+    if (item.articles.length) {
+      return item.articles.map(articleItem => {
+        if (articleItem.id === id) {
+          articleItem['hasRead'] = true;
+          return articleItem;
+        } else {
+          return articleItem;
+        }
+      });
+    }
+  });
+  return { ...state, data: currentState };
+};
+
 export const MainReducer = (state, action) => {
   switch (action.type) {
     case CREATE_COLLECTION:
@@ -82,6 +100,8 @@ export const MainReducer = (state, action) => {
       return editClip(action.payload, state);
     case DELETE_CLIP:
       return deleteClip(action.payload, state);
+    case MARK_AS_READ:
+      return markAsRead(action.payload, state);
     default:
       return state;
   }

@@ -7,7 +7,7 @@ import { ModalContext } from '../../../store/ModalContext';
 import { RootContext } from '../../../store/RootContext';
 
 export default function ArticleBottomSheet({ selectedArticle, actionFunctions }) {
-  const { deleteClip } = useContext(RootContext);
+  const { deleteClip, markAsRead } = useContext(RootContext);
   const { showBottomSheet, setBottomSheet } = useContext(ModalContext);
   const [actionAfterSheetClose, setActionAfterSheetClose] = useState({ selectedFn: null });
 
@@ -17,6 +17,11 @@ export default function ArticleBottomSheet({ selectedArticle, actionFunctions })
   };
 
   const handleEdit = () => {};
+
+  const handleMarkAsRead = id => {
+    markAsRead(id);
+    setBottomSheet(!showBottomSheet);
+  };
 
   const openUrl = async url => {
     try {
@@ -42,7 +47,13 @@ export default function ArticleBottomSheet({ selectedArticle, actionFunctions })
           }}
           color={colors.grey}
         />
-        <Button title={'Mark as read'} onPress={() => {}} color={colors.grey} />
+        <Button
+          title={'Mark as read'}
+          onPress={() => {
+            handleMarkAsRead(selectedArticle.id);
+          }}
+          color={colors.grey}
+        />
         <Button
           title={'Edit'}
           onPress={() => {

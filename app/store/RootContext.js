@@ -1,5 +1,5 @@
 import React, { createContext, useReducer } from 'react';
-import { CREATE_COLLECTION, CREATE_CLIP, EDIT_CLIP, DELETE_CLIP } from './ActionCreator';
+import { CREATE_COLLECTION, CREATE_CLIP, EDIT_CLIP, DELETE_CLIP, MARK_AS_READ } from './ActionCreator';
 import { MainReducer } from './Reducer';
 
 export const RootContext = createContext();
@@ -23,12 +23,17 @@ export const RootContextProvide = ({ children }) => {
     dispatch({ type: DELETE_CLIP, payload: { id: id } });
   };
 
+  const markAsRead = id => {
+    dispatch({ type: MARK_AS_READ, payload: { id: id } });
+  };
+
   const contextValue = {
     data: state,
     createCollection,
     createClip,
     editClip,
     deleteClip,
+    markAsRead,
   };
 
   return <RootContext.Provider value={contextValue}>{children}</RootContext.Provider>;
