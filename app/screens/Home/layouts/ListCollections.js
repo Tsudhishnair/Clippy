@@ -11,8 +11,8 @@ export default function ListCollection(props) {
 
   const { data } = props;
 
-  const renderArticleItem = ({ item }) => {
-    return <Text style={[GlobalStyle.text, styles.articleItem]}>{item.title}</Text>;
+  const renderArticleItem = ({ item, index }) => {
+    if (index < 3) return <Text style={[GlobalStyle.text, styles.articleItem]}>{item.title}</Text>;
   };
 
   const handleCollectionItemPress = (id, name) => {

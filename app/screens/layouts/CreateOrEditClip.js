@@ -6,12 +6,14 @@ import BasicModal from '../../components/Modal';
 import { RootContext } from '../../store/RootContext';
 import { GlobalStyle } from '../../constants/GlobalStyle';
 import { ModalContext } from '../../store/ModalContext';
+import colors from '../../constants/colors';
 
 export default function CreateOrEditClip({ initialValues }) {
   const [clipUrl, setClipUrl] = useState('');
   const [open, setOpen] = useState(false);
   const [collectionName, setCollectionName] = useState(null);
   const [items, setItems] = useState([]);
+  const [error, setError] = useState(false);
 
   const { data, createClip, editClip } = useContext(RootContext);
   const { showCreateOrEditClipModal, setCreateOrEditClipModal } = useContext(ModalContext);
@@ -28,13 +30,23 @@ export default function CreateOrEditClip({ initialValues }) {
       setClipUrl(initialValues.clipUrl);
       setCollectionName(initialValues.collectionName);
     }
+    return () => {
+      setError(false);
+      setClipUrl('');
+      setCollectionName(null);
+    };
   }, [initialValues]);
 
-  const handleSubmit = async () => {
+  const submitFn = async () => {
     try {
       const response = await fetch(clipUrl);
+
       const responseText = await response.text();
-      const title = responseText.match(/<title[^>]*>([^<]+)<\/title>/)[1];
+      let title = 'Article item';
+      const titleCheckRegex = /<title[^>]*>([^<]+)<\/title>/;
+      if (titleCheckRegex.test(responseText)) {
+        title = responseText.match(titleCheckRegex)[1];
+      }
       const dataObj = { title: title != null ? title : '-', url: clipUrl, hasRead: false };
       if (!initialValues.isEditClip) {
         createClip({ ...dataObj }, collectionName);
@@ -43,6 +55,16 @@ export default function CreateOrEditClip({ initialValues }) {
       }
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const handleSubmit = () => {
+    if (collectionName !== null && clipUrl !== '') {
+      submitFn();
+      return true;
+    } else {
+      setError(true);
+      return false;
     }
   };
 
@@ -67,6 +89,7 @@ export default function CreateOrEditClip({ initialValues }) {
           />
           <Text style={[GlobalStyle.text, styles.label]}>URL</Text>
           <TextInput style={[GlobalStyle.text, styles.input]} onChangeText={setClipUrl} value={clipUrl} />
+          {error && <Text style={styles.errorText}>Error: Some fields missing or incorrect</Text>}
         </View>
       </BasicModal>
     </View>
@@ -94,5 +117,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#EEEEEE',
     borderColor: '#EEEEEE',
     borderRadius: 2,
+  },
+  errorText: {
+    color: colors.primaryColor,
   },
 });

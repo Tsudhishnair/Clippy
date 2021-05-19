@@ -42,13 +42,15 @@ export default function Articles({ route }) {
       if (selectedItem !== undefined) {
         const articleListItems = selectedItem.articles;
         const groupedArrayBasedOnKey = groupBy(articleListItems, 'hasRead');
-
-        const formattedArticleObj = [
-          { title: 'UnRead', data: groupedArrayBasedOnKey.false || [] },
-          { title: 'Read', data: groupedArrayBasedOnKey.true || [] },
-        ];
-        //@Todo: Handle empty state of data
-        setFormattedArticle(formattedArticleObj);
+        if (!!groupedArrayBasedOnKey.false || groupedArrayBasedOnKey.true) {
+          const formattedArticleObj = [
+            { title: 'UnRead', data: !!groupedArrayBasedOnKey.false ? groupedArrayBasedOnKey.false : [] },
+            { title: 'Read', data: !!groupedArrayBasedOnKey.true ? groupedArrayBasedOnKey.true : [] },
+          ];
+          setFormattedArticle(formattedArticleObj);
+        } else {
+          setFormattedArticle([]);
+        }
         setSelectedCollection(selectedCollectionName);
       }
     }

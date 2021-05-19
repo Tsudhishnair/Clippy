@@ -9,8 +9,10 @@ export default function BasicModal(props) {
   const { onSubmitFn, header, showModal, setModal } = props;
 
   const onSubmit = () => {
-    onSubmitFn();
-    closeModal();
+    let successfullySubmitted = onSubmitFn();
+    if (successfullySubmitted) {
+      closeModal();
+    }
   };
 
   const closeModal = () => {

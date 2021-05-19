@@ -9,8 +9,9 @@ import { GlobalStyle } from '../../../constants/GlobalStyle';
 export default function ListArticles({ articleItems, handleBottomSheet }) {
   const articleList = [...articleItems];
 
-  const sectionHeader = ({ title }) => {
-    if (title !== 'UnRead') {
+  const sectionHeader = ({ section }) => {
+    const { title, data } = section;
+    if (title !== 'UnRead' && data.length) {
       return <Text style={[GlobalStyle.text, styles.header]}>{title}</Text>;
     }
   };
@@ -64,7 +65,7 @@ export default function ListArticles({ articleItems, handleBottomSheet }) {
         sections={articleList}
         keyExtractor={item => item.id}
         renderItem={({ item }) => articleListLayout({ item })}
-        renderSectionHeader={({ section: { title } }) => sectionHeader({ title })}
+        renderSectionHeader={({ section }) => sectionHeader({ section })}
         ItemSeparatorComponent={itemSeparator}
         ListEmptyComponent={emptyState}
         contentContainerStyle={styles.sectionListContainer}
