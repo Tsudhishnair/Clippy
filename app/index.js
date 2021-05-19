@@ -6,9 +6,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Home from './screens/Home';
 import Articles from './screens/Articles';
-import Navbar from './components/Navbar';
+import { Navbar, RightSideNav, LeftSideNav } from './components/Navbar';
 import { RootContextProvide } from './store/RootContext';
 import { ModalContextProvider } from './store/ModalContext';
+import colors from './constants/colors';
 
 const Stack = createStackNavigator();
 
@@ -29,10 +30,15 @@ export default function Clippy() {
           <Stack.Navigator
             initialRouteName={screenNames.Home}
             screenOptions={{
-              header: props => <Navbar {...props} />,
+              headerTitle: props => <Navbar {...props} />,
+              headerStyle: { backgroundColor: colors.primaryColor },
             }}>
             <Stack.Screen name={screenNames.Home} component={Home} />
-            <Stack.Screen name={screenNames.Articles} component={Articles} />
+            <Stack.Screen
+              name={screenNames.Articles}
+              component={Articles}
+              options={{ headerLeft: props => <LeftSideNav {...props} />, headerRight: props => <RightSideNav {...props} /> }}
+            />
           </Stack.Navigator>
         </ModalContextProvider>
       </RootContextProvide>

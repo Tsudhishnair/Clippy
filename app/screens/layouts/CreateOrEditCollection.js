@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
 
 import BasicModal from '../../components/Modal';
@@ -6,14 +6,22 @@ import { GlobalStyle } from '../../constants/GlobalStyle';
 import { ModalContext } from '../../store/ModalContext';
 import { RootContext } from '../../store/RootContext';
 
-export default function CreateOrEditCollection() {
+export default function CreateOrEditCollection({ initialValues }) {
   const { showCreateOrEditCollectionModal, setCreateOrEditCollectionModal } = useContext(ModalContext);
-  const { createCollection } = useContext(RootContext);
-
+  const { createCollection, editCollection } = useContext(RootContext);
   const [collectionName, setCollectionName] = useState('');
+  useEffect(() => {
+    if (initialValues.isEditCollection) {
+      setCollectionName(initialValues.collectionName);
+    }
+  }, [initialValues]);
 
   const handleSubmit = () => {
-    createCollection(collectionName);
+    if (initialValues.isEditCollection) {
+      editCollection(initialValues.collectionName, collectionName);
+    } else {
+      createCollection(collectionName);
+    }
   };
 
   return (

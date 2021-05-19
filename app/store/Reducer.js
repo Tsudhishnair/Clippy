@@ -1,14 +1,14 @@
-import { CREATE_COLLECTION, CREATE_CLIP, EDIT_CLIP, DELETE_CLIP, MARK_AS_READ } from './ActionCreator';
+import { CREATE_COLLECTION, CREATE_CLIP, EDIT_CLIP, DELETE_CLIP, MARK_AS_READ, DELETE_COLLECTION, EDIT_COLLECTION } from './ActionCreator';
 import { generateUniqueId } from '../utils/mainUtils';
 
 const createCollection = (payload, state) => {
-  const { name } = payload;
+  const { collection_name } = payload;
   let currentState = [...state.data];
   let currentCollectionList = [...state.collection_list];
   const uuid = generateUniqueId();
-  const newCollectionDateObj = { id: uuid, articles: [], collection_name: name };
+  const newCollectionDateObj = { id: uuid, articles: [], collection_name: collection_name };
   currentState.push(newCollectionDateObj);
-  currentCollectionList.push(name);
+  currentCollectionList.push(collection_name);
   return { collection_list: currentCollectionList, data: currentState };
 };
 
@@ -98,6 +98,32 @@ const markAsRead = (payload, state) => {
   return { ...state, data: currentState };
 };
 
+const deleteCollection = (payload, state) => {
+  const { collection_name } = payload;
+  const currentState = [...state.data];
+  const currentCollectionList = [...state.collection_list];
+  const updatedCollectionList = currentCollectionList.filter(item => item != collection_name);
+  const updatedState = currentState.filter(item => item.collection_name != collection_name);
+  return { ...state, data: updatedState, collection_list: updatedCollectionList };
+};
+
+const editCollection = (payload, state) => {
+  const { initial_value, collection_name } = payload;
+  const currentState = [...state.data];
+  let currentCollectionList = [...state.collection_list];
+  currentState.map(item => {
+    if (item.collection_name === initial_value) {
+      item.collection_name = collection_name;
+      return item;
+    } else {
+      return item;
+    }
+  });
+  let indexOfItem = currentCollectionList.indexOf(initial_value);
+  currentCollectionList[indexOfItem] = collection_name;
+  return { ...state, data: currentState, collection_list: currentCollectionList };
+};
+
 export const MainReducer = (state, action) => {
   switch (action.type) {
     case CREATE_COLLECTION:
@@ -110,6 +136,10 @@ export const MainReducer = (state, action) => {
       return deleteClip(action.payload, state);
     case MARK_AS_READ:
       return markAsRead(action.payload, state);
+    case EDIT_COLLECTION:
+      return editCollection(action.payload, state);
+    case DELETE_COLLECTION:
+      return deleteCollection(action.payload, state);
     default:
       return state;
   }

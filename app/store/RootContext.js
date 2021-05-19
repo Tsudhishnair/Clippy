@@ -1,5 +1,5 @@
 import React, { createContext, useReducer } from 'react';
-import { CREATE_COLLECTION, CREATE_CLIP, EDIT_CLIP, DELETE_CLIP, MARK_AS_READ } from './ActionCreator';
+import { CREATE_COLLECTION, CREATE_CLIP, EDIT_CLIP, DELETE_CLIP, MARK_AS_READ, DELETE_COLLECTION, EDIT_COLLECTION } from './ActionCreator';
 import { MainReducer } from './Reducer';
 
 export const RootContext = createContext();
@@ -8,7 +8,7 @@ export const RootContextProvide = ({ children }) => {
   const [state, dispatch] = useReducer(MainReducer, { collection_list: [], data: [] });
 
   const createCollection = collectionName => {
-    dispatch({ type: CREATE_COLLECTION, payload: { name: collectionName } });
+    dispatch({ type: CREATE_COLLECTION, payload: { collection_name: collectionName } });
   };
 
   const createClip = (clip, collection_name) => {
@@ -27,6 +27,14 @@ export const RootContextProvide = ({ children }) => {
     dispatch({ type: MARK_AS_READ, payload: { id: id } });
   };
 
+  const deleteCollection = collection_name => {
+    dispatch({ type: DELETE_COLLECTION, payload: { collection_name: collection_name } });
+  };
+
+  const editCollection = (initial_collection_name, collection_name) => {
+    dispatch({ type: EDIT_COLLECTION, payload: { initial_value: initial_collection_name, collection_name: collection_name } });
+  };
+
   const contextValue = {
     data: state,
     createCollection,
@@ -34,6 +42,8 @@ export const RootContextProvide = ({ children }) => {
     editClip,
     deleteClip,
     markAsRead,
+    editCollection,
+    deleteCollection,
   };
 
   return <RootContext.Provider value={contextValue}>{children}</RootContext.Provider>;

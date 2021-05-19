@@ -10,10 +10,11 @@ import { RootContext } from '../../store/RootContext';
 import { ModalContext } from '../../store/ModalContext';
 
 export default function Home() {
-  const { data, createCollection } = useContext(RootContext);
-  const { setCreateOrEditCollectionModal, showCreateOrEditClipModal, setBottomSheet } = useContext(ModalContext);
+  const { data } = useContext(RootContext);
+  const { setCreateOrEditCollectionModal, setBottomSheet } = useContext(ModalContext);
 
   const clipInitialValues = { isEditClip: false };
+  const collectionInitialValues = { isEditCollection: false };
 
   const fabActions = () => {
     if (!data.collection_list.length) {
@@ -28,7 +29,7 @@ export default function Home() {
       <ListCollection data={data} />
       <FabButton actionFn={() => fabActions()} />
       <BottomSheetLayout />
-      <CreateOrEditCollection />
+      <CreateOrEditCollection initialValues={collectionInitialValues} />
       <CreateOrEditClip initialValues={clipInitialValues} />
     </View>
   );

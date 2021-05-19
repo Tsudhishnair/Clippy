@@ -7,27 +7,51 @@ import CreateOrEditClip from '../layouts/CreateOrEditClip';
 import { groupBy } from '../../utils/mainUtils';
 import { RootContext } from '../../store/RootContext';
 import { ModalContext } from '../../store/ModalContext';
+import CreateOrEditCollection from '../layouts/CreateOrEditCollection';
 
 export default function Articles({ route }) {
   const { selectedCollectionId, selectedCollectionName } = route.params;
 
   const { data } = useContext(RootContext);
-  const { showBottomSheet, setBottomSheet, showCreateOrEditClipModal } = useContext(ModalContext);
+  const {
+    showBottomSheet,
+    setBottomSheet,
+    showCreateOrEditClipModal,
+    setSelectedCollection,
+    setRenderCreateCollectionModal,
+    showCreateOrEditCollectionModal,
+    setCreateOrEditCollectionModal,
+  } = useContext(ModalContext);
 
   const [formattedArticle, setFormattedArticle] = useState([]);
   const [selectedArticleItem, setSelectedArticle] = useState(null);
   const [clipInitialValues, setClipInitialValues] = useState(null);
-  useEffect(() => {
-    const selectedItem = data.data.filter(item => item.id == selectedCollectionId)[0];
-    const articleListItems = selectedItem.articles;
-    const groupedArrayBasedOnKey = groupBy(articleListItems, 'hasRead');
+  const [collectionInitialValues, setCollectionInitialValues] = useState({ isEditCollection: false });
 
-    const formattedArticleObj = [
-      { title: 'UnRead', data: groupedArrayBasedOnKey.false || [] },
-      { title: 'Read', data: groupedArrayBasedOnKey.true || [] },
-    ];
-    //@Todo: Handle empty state of data
-    setFormattedArticle(formattedArticleObj);
+  useEffect(() => {
+    setRenderCreateCollectionModal({
+      Fn: () => {
+        renderCreateOrEditCollectionModal();
+      },
+    });
+  }, []);
+
+  useEffect(() => {
+    if (data.data.length) {
+      const selectedItem = data.data.filter(item => item.id == selectedCollectionId)[0];
+      if (selectedItem !== undefined) {
+        const articleListItems = selectedItem.articles;
+        const groupedArrayBasedOnKey = groupBy(articleListItems, 'hasRead');
+
+        const formattedArticleObj = [
+          { title: 'UnRead', data: groupedArrayBasedOnKey.false || [] },
+          { title: 'Read', data: groupedArrayBasedOnKey.true || [] },
+        ];
+        //@Todo: Handle empty state of data
+        setFormattedArticle(formattedArticleObj);
+        setSelectedCollection(selectedCollectionName);
+      }
+    }
   }, [selectedCollectionId, data]);
 
   const handleBottomSheet = item => {
@@ -36,11 +60,17 @@ export default function Articles({ route }) {
     setBottomSheet(!showBottomSheet);
   };
 
+  const renderCreateOrEditCollectionModal = () => {
+    setCollectionInitialValues({ isEditCollection: true, collectionName: selectedCollectionName });
+    setCreateOrEditCollectionModal(!showCreateOrEditCollectionModal);
+  };
+
   return (
     <View style={styles.container}>
       <ListArticles articleItems={formattedArticle} handleBottomSheet={handleBottomSheet} />
       <ArticleBottomSheet selectedArticle={selectedArticleItem} />
       {showCreateOrEditClipModal && selectedArticleItem != null && <CreateOrEditClip initialValues={clipInitialValues} />}
+      {showCreateOrEditCollectionModal && <CreateOrEditCollection initialValues={collectionInitialValues} />}
     </View>
   );
 }
