@@ -1,10 +1,19 @@
 import React, { createContext, useReducer } from 'react';
-import { CREATE_COLLECTION, CREATE_CLIP, EDIT_CLIP, DELETE_CLIP, MARK_AS_READ, DELETE_COLLECTION, EDIT_COLLECTION } from './ActionCreator';
+import {
+  CREATE_COLLECTION,
+  CREATE_CLIP,
+  EDIT_CLIP,
+  DELETE_CLIP,
+  MARK_AS_READ,
+  DELETE_COLLECTION,
+  EDIT_COLLECTION,
+  SET_INITIAL_STATE,
+} from './ActionCreator';
 import { MainReducer } from './Reducer';
 
 export const RootContext = createContext();
 
-export const RootContextProvide = ({ children }) => {
+export const RootContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(MainReducer, { collection_list: [], data: [] });
 
   const createCollection = collectionName => {
@@ -35,6 +44,10 @@ export const RootContextProvide = ({ children }) => {
     dispatch({ type: EDIT_COLLECTION, payload: { initial_value: initial_collection_name, collection_name: collection_name } });
   };
 
+  const setInitialState = val => {
+    dispatch({ type: SET_INITIAL_STATE, payload: { initial_state: val } });
+  };
+
   const contextValue = {
     data: state,
     createCollection,
@@ -44,6 +57,7 @@ export const RootContextProvide = ({ children }) => {
     markAsRead,
     editCollection,
     deleteCollection,
+    setInitialState,
   };
 
   return <RootContext.Provider value={contextValue}>{children}</RootContext.Provider>;

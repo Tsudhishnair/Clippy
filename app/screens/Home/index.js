@@ -11,6 +11,7 @@ import { ModalContext } from '../../store/ModalContext';
 
 export default function Home() {
   const { data } = useContext(RootContext);
+
   const { setCreateOrEditCollectionModal, setBottomSheet } = useContext(ModalContext);
 
   const clipInitialValues = { isEditClip: false };

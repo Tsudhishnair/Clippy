@@ -1,15 +1,19 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
+import { RootContextProvider } from './app/store/RootContext';
+
 import colors from './app/constants/colors';
 import Clippy from './app/index';
 
 export default function App() {
   return (
     <>
-      <SafeAreaView style={styles.topContainer} />
-      <SafeAreaView style={styles.rootContainer}>
-        <Clippy />
-      </SafeAreaView>
+      <RootContextProvider>
+        <SafeAreaView style={styles.topContainer} />
+        <SafeAreaView style={styles.rootContainer}>
+          <Clippy />
+        </SafeAreaView>
+      </RootContextProvider>
     </>
   );
 }
