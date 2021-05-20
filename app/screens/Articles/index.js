@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import ListArticles from './Layouts/ListArticles';
-import ArticleBottomSheet from './Layouts/ArticleBottomSheet';
+import ListArticles from './layouts/ListArticles';
+import ArticleBottomSheet from './layouts/ArticleBottomSheet';
 import CreateOrEditClip from '../layouts/CreateOrEditClip';
 import { groupBy } from '../../utils/mainUtils';
 import { RootContext } from '../../store/RootContext';
