@@ -6,7 +6,7 @@ import colors from '../../../constants/colors';
 import { ModalContext } from '../../../store/ModalContext';
 import { RootContext } from '../../../store/RootContext';
 
-export default function ArticleBottomSheet({ selectedArticle }) {
+export default function ArticleBottomSheet({ selectedArticle, setToast }) {
   const { deleteClip, markAsRead } = useContext(RootContext);
   const { showBottomSheet, setBottomSheet, showCreateOrEditClipModal, setCreateOrEditClipModal } = useContext(ModalContext);
   const [actionAfterSheetClose, setActionAfterSheetClose] = useState({ selectedFn: null });
@@ -14,6 +14,7 @@ export default function ArticleBottomSheet({ selectedArticle }) {
   const handleDeleteArticle = id => {
     deleteClip(id);
     setBottomSheet(!showBottomSheet);
+    setToast({ type: 'success', message: 'Clip deleted successfully.', showToast: true });
   };
 
   const handleEdit = () => {

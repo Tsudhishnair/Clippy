@@ -7,7 +7,7 @@ import { GlobalStyle } from '../../constants/GlobalStyle';
 import { ModalContext } from '../../store/ModalContext';
 import { RootContext } from '../../store/RootContext';
 
-export default function CreateOrEditCollection({ initialValues }) {
+export default function CreateOrEditCollection({ initialValues, setToast }) {
   const { showCreateOrEditCollectionModal, setCreateOrEditCollectionModal } = useContext(ModalContext);
   const { createCollection, editCollection } = useContext(RootContext);
   const [collectionName, setCollectionName] = useState('');
@@ -28,8 +28,10 @@ export default function CreateOrEditCollection({ initialValues }) {
     if (/^[A-Za-z]+$/.test(val)) {
       if (initialValues.isEditCollection) {
         editCollection(initialValues.collectionName, val);
+        setToast({ type: 'success', message: 'Collection updated successfully.', showToast: true });
       } else {
         createCollection(val);
+        setToast({ type: 'success', message: 'Collection added successfully.', showToast: true });
       }
       setError(false);
       return true;

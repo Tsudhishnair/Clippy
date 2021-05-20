@@ -8,7 +8,7 @@ import { GlobalStyle } from '../../constants/GlobalStyle';
 import { ModalContext } from '../../store/ModalContext';
 import colors from '../../constants/colors';
 
-export default function CreateOrEditClip({ initialValues }) {
+export default function CreateOrEditClip({ initialValues, setToast }) {
   const [clipUrl, setClipUrl] = useState('');
   const [open, setOpen] = useState(false);
   const [collectionName, setCollectionName] = useState(null);
@@ -50,8 +50,10 @@ export default function CreateOrEditClip({ initialValues }) {
       const dataObj = { title: title != null ? title : '-', url: clipUrl, hasRead: false };
       if (!initialValues.isEditClip) {
         createClip({ ...dataObj }, collectionName);
+        setToast({ type: 'success', message: 'New clip added successfully.', showToast: true });
       } else {
         editClip({ ...dataObj }, collectionName, initialValues.id);
+        setToast({ type: 'success', message: 'Clip updated successfully.', showToast: true });
       }
     } catch (error) {
       console.error(error);

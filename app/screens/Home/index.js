@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import FabButton from '../../components/Fab';
@@ -8,12 +8,13 @@ import ListCollection from './layouts/ListCollections';
 import BottomSheetLayout from './layouts/BottomSheetLayout';
 import { RootContext } from '../../store/RootContext';
 import { ModalContext } from '../../store/ModalContext';
+import Toast from '../../components/toast';
 
 export default function Home() {
   const { data } = useContext(RootContext);
 
   const { setCreateOrEditCollectionModal, setBottomSheet } = useContext(ModalContext);
-
+  const [toast, setToast] = useState(false);
   const clipInitialValues = { isEditClip: false };
   const collectionInitialValues = { isEditCollection: false };
 
@@ -30,8 +31,9 @@ export default function Home() {
       <ListCollection data={data} />
       <FabButton actionFn={() => fabActions()} />
       <BottomSheetLayout />
-      <CreateOrEditCollection initialValues={collectionInitialValues} />
-      <CreateOrEditClip initialValues={clipInitialValues} />
+      <CreateOrEditCollection initialValues={collectionInitialValues} setToast={setToast} />
+      <CreateOrEditClip initialValues={clipInitialValues} setToast={setToast} />
+      {!!toast && <Toast toastObj={toast} handleToast={setToast} />}
     </View>
   );
 }

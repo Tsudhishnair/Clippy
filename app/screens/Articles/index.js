@@ -8,6 +8,8 @@ import { groupBy } from '../../utils/mainUtils';
 import { RootContext } from '../../store/RootContext';
 import { ModalContext } from '../../store/ModalContext';
 import CreateOrEditCollection from '../layouts/CreateOrEditCollection';
+import FabButton from '../../components/Fab';
+import Toast from '../../components/toast';
 
 export default function Articles({ route }) {
   const { selectedCollectionId, selectedCollectionName } = route.params;
@@ -17,6 +19,7 @@ export default function Articles({ route }) {
     showBottomSheet,
     setBottomSheet,
     showCreateOrEditClipModal,
+    setCreateOrEditClipModal,
     setSelectedCollection,
     setRenderCreateCollectionModal,
     showCreateOrEditCollectionModal,
@@ -25,8 +28,9 @@ export default function Articles({ route }) {
 
   const [formattedArticle, setFormattedArticle] = useState([]);
   const [selectedArticleItem, setSelectedArticle] = useState(null);
-  const [clipInitialValues, setClipInitialValues] = useState(null);
+  const [clipInitialValues, setClipInitialValues] = useState({ isEditClip: false });
   const [collectionInitialValues, setCollectionInitialValues] = useState({ isEditCollection: false });
+  const [toast, setToast] = useState(false);
 
   useEffect(() => {
     setRenderCreateCollectionModal({
@@ -67,12 +71,18 @@ export default function Articles({ route }) {
     setCreateOrEditCollectionModal(!showCreateOrEditCollectionModal);
   };
 
+  const fabActions = () => {
+    setCreateOrEditClipModal(true);
+  };
+
   return (
     <View style={styles.container}>
       <ListArticles articleItems={formattedArticle} handleBottomSheet={handleBottomSheet} />
-      <ArticleBottomSheet selectedArticle={selectedArticleItem} />
-      {showCreateOrEditClipModal && selectedArticleItem != null && <CreateOrEditClip initialValues={clipInitialValues} />}
-      {showCreateOrEditCollectionModal && <CreateOrEditCollection initialValues={collectionInitialValues} />}
+      <ArticleBottomSheet selectedArticle={selectedArticleItem} setToast={setToast} />
+      <FabButton actionFn={() => fabActions()} />
+      {showCreateOrEditClipModal && <CreateOrEditClip initialValues={clipInitialValues} setToast={setToast} />}
+      {showCreateOrEditCollectionModal && <CreateOrEditCollection initialValues={collectionInitialValues} setToast={setToast} />}
+      {!!toast && <Toast toastObj={toast} handleToast={setToast} />}
     </View>
   );
 }
