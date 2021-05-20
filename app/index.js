@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useContext } from 'react';
+import { StatusBar } from 'react-native';
 import RNBootSplash from 'react-native-bootsplash';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -42,6 +43,7 @@ export default function Clippy() {
   return (
     <NavigationContainer>
       <ModalContextProvider>
+        <StatusBar barStyle="light-content" backgroundColor={colors.primaryColor} />
         <Stack.Navigator
           initialRouteName={screenNames.Home}
           screenOptions={{

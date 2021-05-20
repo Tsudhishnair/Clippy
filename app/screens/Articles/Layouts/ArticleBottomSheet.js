@@ -1,10 +1,11 @@
 import React, { useState, useContext } from 'react';
-import { View, Button, StyleSheet, Alert, Linking } from 'react-native';
+import { View, StyleSheet, Alert, Linking, TouchableOpacity, Text } from 'react-native';
 
 import BottomSheet from '../../../components/BottomSheet';
 import colors from '../../../constants/colors';
 import { ModalContext } from '../../../store/ModalContext';
 import { RootContext } from '../../../store/RootContext';
+import { GlobalStyle } from '../../../constants/GlobalStyle';
 
 export default function ArticleBottomSheet({ selectedArticle, setToast }) {
   const { deleteClip, markAsRead } = useContext(RootContext);
@@ -49,44 +50,38 @@ export default function ArticleBottomSheet({ selectedArticle, setToast }) {
     }
   };
 
+  const customButton = (actionFn, buttonText) => {
+    return (
+      <TouchableOpacity onPress={actionFn}>
+        <View style={styles.customButton}>
+          <Text style={[GlobalStyle.text, styles.buttonText]}>{buttonText}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   const bottomSheetContent = () => {
     return (
       <View style={styles.bottomSheetContent}>
-        <Button
-          title={'Open in browser'}
-          onPress={() => {
-            openUrl(selectedArticle.url);
-          }}
-          color={colors.grey}
-        />
-        <Button
-          title={'Mark as read'}
-          onPress={() => {
-            handleMarkAsRead(selectedArticle.id);
-          }}
-          color={colors.grey}
-        />
-        <Button
-          title={'Edit'}
-          onPress={() => {
-            handleEdit();
-          }}
-          color={colors.grey}
-        />
-        <Button
-          title={'Delete'}
-          onPress={() => {
-            handleDeleteArticle(selectedArticle.id);
-          }}
-          color={colors.grey}
-        />
+        {customButton(() => {
+          openUrl(selectedArticle.url);
+        }, 'Open in browser')}
+        {customButton(() => {
+          handleMarkAsRead(selectedArticle.id);
+        }, 'Mark as read')}
+        {customButton(() => {
+          handleEdit();
+        }, 'Edit')}
+        {customButton(() => {
+          handleDeleteArticle(selectedArticle.id);
+        }, 'Delete')}
       </View>
     );
   };
 
   return (
     <BottomSheet showBottomSheet={showBottomSheet} setBottomSheet={setBottomSheet} actions={actionAfterSheetClose} resetFns={resetFns}>
-      {bottomSheetContent()}
+      <View style={styles.bottomSheetContent}>{bottomSheetContent()}</View>
     </BottomSheet>
   );
 }
@@ -96,5 +91,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
+    height: '20%',
+  },
+  customButton: {
+    padding: 5,
+  },
+  buttonText: {
+    color: colors.grey,
   },
 });

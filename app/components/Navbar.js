@@ -75,6 +75,7 @@ export const RightSideNav = props => {
 };
 
 const styles = StyleSheet.create({
+  container: { flexDirection: 'row', justifyContent: 'center' },
   textLogo: {
     color: '#fff',
     fontSize: 20,
